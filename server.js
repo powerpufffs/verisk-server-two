@@ -17,19 +17,20 @@ app.use(bodyParser.json());
 
 // MLFLOW UI endpoints
 app.get("/list-registered-models", async (req, res) => {
-  let data;
-  try {
-    data = await axios.get(
-      `http://${MLFLOW_UI_BASE_URL}/api/2.0/preview/mlflow/registered-models/list`
-    );
-  } catch (err) {
-    console.log("failed");
-    console.log(err);
-    return res.status(500).send(err);
-  }
+  //   let data;
+  //   try {
+  //     data = await axios.get(
+  //       `http://${MLFLOW_UI_BASE_URL}/api/2.0/preview/mlflow/registered-models/list`
+  //     );
+  //   } catch (err) {
+  //     console.log("failed");
+  //     console.log(err);
+  //     return res.status(500).send(err);
+  //   }
 
-  console.log("success");
-  return res.json(data);
+  //   console.log("success");
+  //   return res.json(data);
+  return res.json("heyo");
 });
 
 var Docker = require("dockerode");
