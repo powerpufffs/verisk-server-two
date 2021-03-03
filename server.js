@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { default: axios } = require("axios");
+const axios = require("axios");
 
 require("dotenv").config();
 
@@ -17,20 +17,21 @@ app.use(bodyParser.json());
 
 // MLFLOW UI endpoints
 app.get("/list-registered-models", async (req, res) => {
-  //   let data;
-  //   try {
-  //     data = await axios.get(
-  //       `http://${MLFLOW_UI_BASE_URL}/api/2.0/preview/mlflow/registered-models/list`
-  //     );
-  //   } catch (err) {
-  //     console.log("failed");
-  //     console.log(err);
-  //     return res.status(500).send(err);
-  //   }
+  let response;
+  try {
+    const { data } = await axios.get(
+      `http://${MLFLOW_UI_BASE_URL}/api/2.0/preview/mlflow/registered-models/list`
+      //   `http://ec2-3-223-6-95.compute-1.amazonaws.com:5000/api/2.0/preview/mlflow/registered-models/list`
+    );
+    response = data;
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err);
+  }
 
-  //   console.log("success");
-  //   return res.json(data);
-  return res.json("heyo");
+  console.log("success");
+  return res.send(response);
+  // return res.json("hey")
 });
 
 var Docker = require("dockerode");
