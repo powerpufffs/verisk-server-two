@@ -16,23 +16,34 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MLFLOW UI endpoints
-app.get("/list-models", async (req, res) => {
+app.get("/list-registered-models", async (req, res) => {
   let data;
   try {
     data = await axios.get(
-      `${MLFLOW_UI_BASE_URL}/api/2.0/preview/mlflow/registered-models/list`
+      `http://${MLFLOW_UI_BASE_URL}/api/2.0/preview/mlflow/registered-models/list`
     );
   } catch (err) {
+    console.log("failed");
     console.log(err);
     return res.status(500).send(err);
   }
 
+  console.log("success");
   return res.json(data);
 });
 
+var Docker = require("dockerode");
+const aws = require("aws-sdk");
+const exec = require("child_process").exec;
+
 // Deployment endpoints
 app.get("/deploy-docker", async (req, res) => {
-  return res.json("hi");
+  const { artifactLocation } = req.params;
+
+  // execute script
+  const result = await exec("echo 'AMAZING'");
+
+  return res.json({ result });
 });
 
 app.get("/deploy-ecs", async (req, res) => {
