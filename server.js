@@ -53,12 +53,19 @@ app.get("/deploy-ecs", async (req, res) => {
 // For the demo
 // MLFLOW MODEL TEST endpoints
 app.post("/test-endpoint", async (req, res) => {
-  const params = req.params;
+  const params = req.body;
+
   let response;
   try {
     response = await axios.post(
       `http://ec2-3-235-5-18.compute-1.amazonaws.com:8080/invocations`,
-      params
+      params,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          format: "pandas-split",
+        },
+      }
     );
   } catch (err) {
     console.log(err);
