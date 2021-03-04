@@ -21,7 +21,6 @@ app.get("/list-registered-models", async (req, res) => {
   try {
     const { data } = await axios.get(
       `http://${MLFLOW_UI_BASE_URL}/api/2.0/preview/mlflow/registered-models/list`
-      //   `http://ec2-3-223-6-95.compute-1.amazonaws.com:5000/api/2.0/preview/mlflow/registered-models/list`
     );
     response = data;
   } catch (err) {
@@ -31,7 +30,6 @@ app.get("/list-registered-models", async (req, res) => {
 
   console.log("success");
   return res.send(response);
-  // return res.json("hey")
 });
 
 var Docker = require("dockerode");
@@ -50,6 +48,24 @@ app.get("/deploy-docker", async (req, res) => {
 
 app.get("/deploy-ecs", async (req, res) => {
   return res.json("hi");
+});
+
+// For the demo
+// MLFLOW MODEL TEST endpoints
+app.post("/test-endpoint", async (req, res) => {
+  const params = req.params;
+  let response;
+  try {
+    response = await axios.post(
+      `http://ec2-3-235-5-18.compute-1.amazonaws.com:8080/invocations`,
+      params
+    );
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err);
+  }
+  console.log("success");
+  return res.send(response.data);
 });
 
 app.listen(PORT, () => {
