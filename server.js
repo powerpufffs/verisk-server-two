@@ -68,11 +68,9 @@ app.post("/test-endpoint", async (req, res) => {
       }
     );
   } catch (err) {
-    console.log(err);
     return res.status(500).send(err);
   }
-  console.log("success");
-  return res.send(response.data);
+  return res.json(response.data);
 });
 
 app.listen(PORT, () => {
