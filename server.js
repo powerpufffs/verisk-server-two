@@ -58,9 +58,14 @@ app.post("/deploy-ec2", async (req, res) => {
   const { artifactLocation } = req.params;
 
   // Call service to build image and push to ECR
-  const { ecr_uri } = await axios.post(MICROSERVICE_ENDPOINT, {
-    artifactLocation: artifactLocation,
-  });
+  let ecr_uri;
+  try {
+    ecr_uri = await axios.post(MICROSERVICE_ENDPOINT, {
+      artifactLocation: artifactLocation,
+    });
+  } catch (e) {
+    console.log(e);
+  }
 
   const [url, tag] = ecr_uri.split("/");
 
