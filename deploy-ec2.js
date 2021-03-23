@@ -16,8 +16,9 @@ const deploy = async ({ ecrUri, tag }) => {
   const generator = idGenerator();
   const base64Script = generateScript(ecrUri, tag);
 
+  let response;
   try {
-    let response = await createInstance({
+    response = await createInstance({
       imageId: "ami-042e8287309f5df03",
       count: 1,
       keyName: "verisk-team",
