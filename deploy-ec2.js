@@ -46,7 +46,7 @@ const generateScript = (ECR_URI, tag) => {
     aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin ${ECR_URI}
     sudo docker run -d -p 8080:8080 ${ECR_URI}/${tag}`;
 
-    return (new Buffer(comand)).toString('base64');
+    return (new Buffer(command)).toString('base64');
 }
 
 module.exports = { deploy }
