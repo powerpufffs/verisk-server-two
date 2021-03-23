@@ -68,7 +68,7 @@ app.get("/deploy-ec2", async (req, res) => {
   const dns = deploy(url, tag);
 
   // Return public DNS
-  res.json({ publicDNS: `${dns}/8080` });
+  res.json({ publicDNS: `${dns}:8080/invocations` });
 });
 
 // For the demo
