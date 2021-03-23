@@ -31,13 +31,14 @@ const deploy = async ({ ecrUri, tag }) => {
 
   console.log(response);
 
+  let instances
   try {
-    const instances = await describeInstances({});
+    instances = await describeInstances({});
   } catch (e) {
     console.log(e);
   }
 
-  const { PublicDnsName } = instance[0];
+  const { PublicDnsName } = instances[0];
   return PublicDnsName;
 };
 
