@@ -54,12 +54,12 @@ const { deploy } = require("./deploy-ec2");
 const MICROSERVICE_ENDPOINT =
   "http://ec2-3-235-5-18.compute-1.amazonaws.com:8000/docker";
 
-app.get("/deploy-ec2", async (req, res) => {
+app.post("/deploy-ec2", async (req, res) => {
   const { artifactLocation } = req.params;
 
   // Call service to build image and push to ECR
   const { ecr_uri } = await axios.post(MICROSERVICE_ENDPOINT, {
-    artifactLocation: s3_url,
+    artifactLocation: artifactLocation,
   });
 
   const [url, tag] = ecr_uri.split("/");
