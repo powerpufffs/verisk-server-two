@@ -19,7 +19,7 @@ const deploy = ({ ecrUri, tag }) => {
         imageId: "ami-042e8287309f5df03", 
         count: 1, 
         keyName: "verisk-team", 
-        deployId: generator(), 
+        deployId: generator().toString(), 
         userData: base64Script
     })
 
