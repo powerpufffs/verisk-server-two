@@ -30,7 +30,7 @@ const deploy = async ({ ecrUri, tag }) => {
     console.log(e);
   }
 
-  console.log(response);
+//   const { Instances: {} } = response
 
   let instances
   try {
@@ -38,6 +38,8 @@ const deploy = async ({ ecrUri, tag }) => {
   } catch (e) {
     console.log(e);
   }
+
+  console.log(instances)
 
   const { PublicDnsName } = instances[0];
   return PublicDnsName;
