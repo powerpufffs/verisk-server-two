@@ -63,14 +63,12 @@ app.post("/deploy-ec2", async (req, res) => {
     const { data } = await axios.post(MICROSERVICE_ENDPOINT, {
       artifactLocation: artifactLocation,
     });
-    console.log(data)
     ecr_uri = data
   } catch (e) {
     console.log(e);
     return res.send(500);
   }
 
-  console.log(ecr_uri);
   const [url, tag] = ecr_uri.split("/");
 
   // Create instance and return public DNS

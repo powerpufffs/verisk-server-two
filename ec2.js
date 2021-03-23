@@ -49,7 +49,7 @@ const createInstance = async ({
         },
       ],
       SubnetId: subnetId,
-      SecurityGroups: securityGroupIds,
+      SecurityGroupIds: securityGroupIds,
       InstanceType: "t2.micro",
       IamInstanceProfile: {
         Name: "verisk-ec2",
