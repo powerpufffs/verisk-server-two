@@ -31,7 +31,7 @@ const createInstance = async ({
   deployId,
   userData,
 }) => {
-  return ec2.runInstances(
+  return await ec2.runInstances(
     {
       ImageId: imageId,
       MinCount: count,
@@ -70,7 +70,7 @@ const createInstance = async ({
 };
 
 const terminateInstance = async (instanceId) => {
-  return ec2.terminateInstances({ InstanceIds: [instanceId] }, function(
+  return await ec2.terminateInstances({ InstanceIds: [instanceId] }, function(
     err,
     data
   ) {
