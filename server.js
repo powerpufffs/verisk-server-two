@@ -66,7 +66,7 @@ app.post("/deploy-ec2", async (req, res) => {
   } catch (e) {
     console.log(e);
   }
-
+  console.log(ecr_uri);
   const [url, tag] = ecr_uri.split("/");
 
   // Create instance and return public DNS
