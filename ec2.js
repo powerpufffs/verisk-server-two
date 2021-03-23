@@ -2,10 +2,10 @@ const { aws } = require("./aws-config");
 
 var ec2 = new aws.EC2();
 
-const describeInstances = async () => {
+const describeInstances = async ({ deployId }) => {
   return ec2.describeInstances(
     {
-      Filters: [{ Name: "tag:deployID", Values: ["1234"] }],
+      Filters: [{ Name: "tag:deployID", Values: [deployId] }],
     },
     function(err, data) {
       if (err) {
@@ -19,7 +19,7 @@ const describeInstances = async () => {
       });
       return instances.flat();
     }
-  );
+  ).promise();
 };
 
 const createInstance = async ({
@@ -66,7 +66,7 @@ const createInstance = async ({
         }
       }
     }
-  );
+  ).promise();
 };
 
 const terminateInstance = async (instanceId) => {
@@ -82,7 +82,7 @@ const terminateInstance = async (instanceId) => {
         console.log("TERM:\t" + instance.InstanceId);
       }
     }
-  });
+  }).promise();
 };
 
 module.exports = {

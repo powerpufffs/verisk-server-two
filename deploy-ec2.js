@@ -15,6 +15,7 @@ const idGenerator = () => {
 const deploy = async ({ ecrUri, tag }) => {
   const generator = idGenerator();
   const base64Script = generateScript(ecrUri, tag);
+  const id = generator().toString()
 
   let response;
   try {
@@ -22,7 +23,7 @@ const deploy = async ({ ecrUri, tag }) => {
       imageId: "ami-042e8287309f5df03",
       count: 1,
       keyName: "verisk-team",
-      deployId: generator().toString(),
+      deployId: id,
       userData: base64Script,
     });
   } catch (e) {
@@ -33,7 +34,7 @@ const deploy = async ({ ecrUri, tag }) => {
 
   let instances
   try {
-    instances = await describeInstances({});
+    instances = await describeInstances({ deployId: id });
   } catch (e) {
     console.log(e);
   }
