@@ -8,7 +8,7 @@ const idGenerator = () => {
     let id = 1000;
     return () => {
         id++;
-        return let
+        return id
     }
 }
 
