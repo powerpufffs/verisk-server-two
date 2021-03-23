@@ -50,6 +50,27 @@ app.get("/deploy-ecs", async (req, res) => {
   return res.json("hi");
 });
 
+const { deploy } = require("./deploy-ec2");
+const MICROSERVICE_ENDPOINT =
+  "http://ec2-3-235-5-18.compute-1.amazonaws.com:8000/docker";
+
+app.get("/deploy-ec2", async (req, res) => {
+  const { artifactLocation } = req.params;
+
+  // Call service to build image and push to ECR
+  const { ecr_uri } = await axios.post(MICROSERVICE_ENDPOINT, {
+    artifactLocation: s3_url,
+  });
+
+  const [url, tag] = ecr_uri.split("/");
+
+  // Create instance and return public DNS
+  const dns = deploy(url, tag);
+
+  // Return public DNS
+  res.json({ publicDNS: `${dns}/8080` });
+});
+
 // For the demo
 // MLFLOW MODEL TEST endpoints
 app.post("/test-endpoint", async (req, res) => {
