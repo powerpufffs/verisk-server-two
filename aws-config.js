@@ -5,6 +5,7 @@ var aws = require("aws-sdk");
 //   secretAccessKey: "YOUR_SECRET_KEY",
 //   region: "us-west-2",
 // });
+AWS.config.update({region:'us-east-1'});
 
 module.exports = {
     aws
