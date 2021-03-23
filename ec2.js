@@ -1,9 +1,9 @@
-const aws = require('./aws-config')
+const { aws } = require('./aws-config')
 
 var ec2 = new aws.EC2();
 
 const describeInstances = () => {
-    ec2.describeInstances(
+    return ec2.describeInstances(
         {
         Filters: [{ Name: "tag:deployID", Values: ["1234"] }],
         },
@@ -23,7 +23,7 @@ const describeInstances = () => {
 }
 
 const createInstance = ({imageId, count, keyName, subnetId="subnet-02fae22e3e7147ba0", securityGroupIds=["sg-056ff00b48bd090df"], deployId, userData}) => {
-    ec2.runInstances(
+    return ec2.runInstances(
         {
         ImageId: imageId,
         MinCount: count,
@@ -62,7 +62,7 @@ const createInstance = ({imageId, count, keyName, subnetId="subnet-02fae22e3e714
 }
 
 const terminateInstance = (instanceId) => {
-    ec2.terminateInstances({ InstanceIds: [instanceId] }, function(err, data) {
+    return ec2.terminateInstances({ InstanceIds: [instanceId] }, function(err, data) {
         if (err) {
         console.error(err.toString());
         } else {

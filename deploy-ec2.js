@@ -15,15 +15,17 @@ const idGenerator = () => {
 const deploy = ({ ecrUri, tag }) => {
     const generator = idGenerator() 
     const base64Script = generateScript(ecrUri, tag)
-    let response = await createInstance({
+    let response = createInstance({
         imageId: "ami-042e8287309f5df03", 
         count: 1, 
         keyName: "verisk-team", 
         deployId: generator(), 
         userData: base64Script
     })
+
+    console.log(response);
     
-    const instances = await describeInstances()
+    const instances = describeInstances({ })
     const { PublicDnsName } = instance[0]
     return PublicDnsName
 }
