@@ -12,40 +12,21 @@ const idGenerator = () => {
   };
 };
 
-const deploy = async ({ ecrUri, tag }) => {
+const deploy = async ({ ecrUri, name }) => {
   const generator = idGenerator();
-  const base64Script = generateScript(ecrUri, tag);
-  const id = generator().toString()
+  const base64Script = generateScript(ecrUri, name);
+  const id = generator().toString();
 
-  let response;
-  try {
-    response = await createInstance({
-      imageId: "ami-042e8287309f5df03",
-      count: 1,
-      keyName: "verisk-team",
-      deployId: id,
-      userData: base64Script,
-    });
-  } catch (e) {
-    console.log(e);
-  }
-
-//   const { Instances: {} } = response
-
-  let instances
-  try {
-    instances = await describeInstances({ deployId: id });
-  } catch (e) {
-    console.log(e);
-  }
-
-  console.log(instances)
-
-  const { PublicDnsName } = instances[0];
-  return PublicDnsName;
+  return createInstance({
+    imageId: "ami-042e8287309f5df03",
+    count: 1,
+    keyName: "verisk-team",
+    deployId: id,
+    userData: base64Script,
+  });
 };
 
-const generateScript = (ECR_URI, tag) => {
+const generateScript = (ECR_URI, name) => {
   let command = `#!/bin/bash
     sudo apt-get update
     sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
@@ -59,7 +40,8 @@ const generateScript = (ECR_URI, tag) => {
     sudo unzip awscliv2.zip
     sudo ./aws/install
     aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin ${ECR_URI}
-    sudo docker run -d -p 8080:8080 ${ECR_URI}/${tag}`;
+    sudo docker run -d -p 8080:8080 ${ECR_URI}/${name}:latest
+    curl `;
 
   return new Buffer(command).toString("base64");
 };

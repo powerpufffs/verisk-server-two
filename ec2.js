@@ -2,10 +2,11 @@ const { aws } = require("./aws-config");
 
 var ec2 = new aws.EC2();
 
-const describeInstances = async ({ deployId }) => {
+const describeInstances = async ({ filterId }) => {
   return ec2.describeInstances(
     {
-      Filters: [{ Name: "tag:deployID", Values: [deployId] }],
+      // Filters: [{ Name: "tag:deployID", Values: [deployId] }],
+      Filters: [{ Name: "tag:ec2GroupId", Values: [filterId] }],
     },
     function(err, data) {
       if (err) {
@@ -45,6 +46,10 @@ const createInstance = async ({
               Key: "deployId",
               Value: deployId,
             },
+            {
+              Key: "ec2GroupId",
+              Value: 'EC2_LIVE'
+            }
           ],
         },
       ],

@@ -51,31 +51,43 @@ app.get("/deploy-ecs", async (req, res) => {
 });
 
 const { deploy } = require("./deploy-ec2");
+const { describeInstances } = require("./ec2");
 const MICROSERVICE_ENDPOINT =
   "http://ec2-3-235-5-18.compute-1.amazonaws.com:8000/docker";
 
 app.post("/deploy-ec2", async (req, res) => {
-  const { artifactLocation } = req.params;
+  const { artifactLocation, ecrURL, name } = req.params;
+  // const { artifactLocation, ecrURL, name } = {
+  //   artifactLocation: "",
+  //   ecrURL: "383367762271.dkr.ecr.us-east-1.amazonaws.com",
+  //   name: "midterm_demo",
+  // };
 
   // Call service to build image and push to ECR
-  let ecr_uri;
   try {
-    const { data } = await axios.post(MICROSERVICE_ENDPOINT, {
-      artifactLocation: artifactLocation,
-    });
-    ecr_uri = data
+    // const { data } = await axios.post(MICROSERVICE_ENDPOINT, {
+    //   artifactLocation: artifactLocation,
+    //   ecrURL: ecrURL,
+    //   name: name,
+    // });
   } catch (e) {
     console.log(e);
-    return res.send(500);
+    return res.sendStatus(500);
   }
 
-  const [url, tag] = ecr_uri.split("/");
+  // Create instance
+  try {
+    await deploy(ecrURL, name);
+  } catch (e) {
+    return res.sendStatus(500);
+  }
 
-  // Create instance and return public DNS
-  const dns = deploy(url, tag);
+  // res.json({ publicDNS: `${dns}:8080/invocations` });
+  return res.json({ message: "Success! EC2 Is being prepared." });
+});
 
-  // Return public DNS
-  res.json({ publicDNS: `${dns}:8080/invocations` });
+app.post("/live-endpoints", async (req, res) => {
+  const urls = await describeInstances()
 });
 
 // For the demo
@@ -100,6 +112,8 @@ app.post("/test-endpoint", async (req, res) => {
   }
   return res.json(response.data);
 });
+
+app.post("/alive", async (req, res) => {});
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
