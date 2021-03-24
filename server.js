@@ -89,8 +89,24 @@ app.post("/deploy-ec2", async (req, res) => {
   return res.json({ message: "Success! EC2 Is being prepared." });
 });
 
+app.post("/deploy-webhook", async (req, res) => {
+  const { ecrURL, name } = req.params;
+
+  // Create instance
+  try {
+    await deploy({ ecrURL, name });
+    console.log("worked!");
+  } catch (e) {
+    console.log("failed");
+    console.log(e);
+    return res.sendStatus(500);
+  }
+
+})
+
 app.post("/live-endpoints", async (req, res) => {
-  const urls = await describeInstances();
+  const urls = await describeInstances("EC2_LIVE");
+  return req.json(urls)
 });
 
 // For the demo
