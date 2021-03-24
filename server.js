@@ -78,7 +78,10 @@ app.post("/deploy-ec2", async (req, res) => {
   // Create instance
   try {
     await deploy(ecrURL, name);
+    console.log("worked!")
   } catch (e) {
+    console.log("failed")
+    console.log(e)
     return res.sendStatus(500);
   }
 
