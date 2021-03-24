@@ -12,9 +12,9 @@ const idGenerator = () => {
   };
 };
 
-const deploy = async ({ ecrUri, name }) => {
+const deploy = async ({ ecrURL, name }) => {
   const generator = idGenerator();
-  const base64Script = generateScript(ecrUri, name);
+  const base64Script = generateScript(ecrURL, name);
   const id = generator().toString();
 
   return createInstance({
