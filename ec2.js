@@ -20,6 +20,7 @@ const describeInstances = async ({ filterId }) => {
         const instances = reservations.map((reservation) => {
           const { Instances } = reservation;
           const { PublicDnsName, Tags } = Instances;
+          console.log(Instances)
           const { Value } = Tags.find((x) => x.Key === "deployId");
           return {
             dns: `${PublicDnsName}:8080/invocations`,
