@@ -19,8 +19,15 @@ const describeInstances = async ({ filterId }) => {
         const reservations = data.Reservations;
         const instances = reservations.map((reservation) => {
           const { Instances } = reservation;
-          return Instances;
+          const { PublicDnsName, Tags } = Instances;
+          const { Value } = Tags.find((x) => x.Key === "deployId");
+          return {
+            dns: `${PublicDnsName}:8080/invocations`,
+            id: Value,
+          };
         });
+
+        console.log(instances);
         return instances.flat();
       }
     )
