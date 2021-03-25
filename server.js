@@ -55,7 +55,7 @@ const { describeInstances } = require("./ec2");
 const MICROSERVICE_ENDPOINT =
   "http://ec2-3-235-5-18.compute-1.amazonaws.com:8000/docker";
 
-app.post("/deploy-ec2", async (req, res) => {
+app.get("/deploy-ec2", async (req, res) => {
   const { artifactLocation, ecrURL, name } = req.params;
   // const { artifactLocation, ecrURL, name } = {
   //   artifactLocation: "",
@@ -104,7 +104,7 @@ app.post("/deploy-webhook", async (req, res) => {
 
 })
 
-app.post("/live-endpoints", async (req, res) => {
+app.get("/live-endpoints", async (req, res) => {
   const urls = await describeInstances("EC2_LIVE");
   return req.json(urls)
 });
