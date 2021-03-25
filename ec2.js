@@ -13,23 +13,19 @@ const describeInstances = async ({ filterId }) => {
         if (err) {
           console.error(err.toString());
         }
-
         // console.log(data);
+        // const reservations = data.Reservations;
+        // const instances = reservations.map((reservation) => {
+        //   const { Instances } = reservation;
+        //   const { PublicDnsName, Tags } = Instances[0];
+        //   const { Value } = Tags.find((x) => x.Key === "deployId");
+        //   return {
+        //     dns: `${PublicDnsName}:8080/invocations`,
+        //     id: Value,
+        //   };
+        // });
 
-        const reservations = data.Reservations;
-        const instances = reservations.map((reservation) => {
-          const { Instances } = reservation;
-          const { PublicDnsName, Tags } = Instances[0];
-          console.log(Tags)
-          const { Value } = Tags.find((x) => x.Key === "deployId");
-          return {
-            dns: `${PublicDnsName}:8080/invocations`,
-            id: Value,
-          };
-        });
-
-        console.log(instances);
-        return instances.flat();
+        // return instances.flat();
       }
     )
     .promise();

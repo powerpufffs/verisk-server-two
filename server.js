@@ -104,8 +104,20 @@ app.post("/deploy-webhook", async (req, res) => {
 });
 
 app.get("/live-endpoints", async (req, res) => {
-  const urls = await describeInstances({ filterId: "EC2_LIVE" });
-  return res.json(urls);
+  const response = await describeInstances({ filterId: "EC2_LIVE" });
+
+  const reservations = response.Reservations;
+  const instances = reservations.map((reservation) => {
+    const { Instances } = reservation;
+    const { PublicDnsName, Tags } = Instances[0];
+    const { Value } = Tags.find((x) => x.Key === "deployId");
+    return {
+      dns: `${PublicDnsName}:8080/invocations`,
+      id: Value,
+    };
+  });
+
+  return res.json(instances);
 });
 
 // For the demo
