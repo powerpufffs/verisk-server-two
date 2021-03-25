@@ -106,7 +106,7 @@ app.post("/deploy-webhook", async (req, res) => {
 
 app.get("/live-endpoints", async (req, res) => {
   const urls = await describeInstances("EC2_LIVE");
-  return req.json(urls)
+  return res.json(urls)
 });
 
 // For the demo
