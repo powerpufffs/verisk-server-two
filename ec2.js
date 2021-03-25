@@ -14,13 +14,13 @@ const describeInstances = async ({ filterId }) => {
           console.error(err.toString());
         }
 
-        console.log(data);
+        // console.log(data);
 
         const reservations = data.Reservations;
         const instances = reservations.map((reservation) => {
           const { Instances } = reservation;
           const { PublicDnsName, Tags } = Instances;
-          console.log(Instances)
+          console.log(Tags)
           const { Value } = Tags.find((x) => x.Key === "deployId");
           return {
             dns: `${PublicDnsName}:8080/invocations`,
