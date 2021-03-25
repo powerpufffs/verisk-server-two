@@ -101,12 +101,11 @@ app.post("/deploy-webhook", async (req, res) => {
     console.log(e);
     return res.sendStatus(500);
   }
-
-})
+});
 
 app.get("/live-endpoints", async (req, res) => {
-  const urls = await describeInstances("EC2_LIVE");
-  return res.json(urls)
+  const urls = await describeInstances({ filterId: "EC2_LIVE" });
+  return res.json(urls);
 });
 
 // For the demo
