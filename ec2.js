@@ -19,7 +19,7 @@ const describeInstances = async ({ filterId }) => {
         const reservations = data.Reservations;
         const instances = reservations.map((reservation) => {
           const { Instances } = reservation;
-          const { PublicDnsName, Tags } = Instances;
+          const { PublicDnsName, Tags } = Instances[0];
           console.log(Tags)
           const { Value } = Tags.find((x) => x.Key === "deployId");
           return {
