@@ -27,6 +27,8 @@ const deploy = async ({ ecrURL, name }) => {
 };
 
 const generateScript = (ECR_URI, name) => {
+  console.log(ECR_URI);
+  console.log(name);
   let command = `#!/bin/bash
     sudo apt-get update
     sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
