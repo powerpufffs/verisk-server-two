@@ -55,7 +55,7 @@ const { describeInstances } = require("./ec2");
 const MICROSERVICE_ENDPOINT =
   "http://ec2-3-235-5-18.compute-1.amazonaws.com:8000/docker";
 
-app.post("/deploy-ec2", async (req, res) => {
+app.get("/deploy-ec2", async (req, res) => {
   const { artifactLocation, ecrURL, name } = req.params;
   // const { artifactLocation, ecrURL, name } = {
   //   artifactLocation: "",
@@ -89,8 +89,35 @@ app.post("/deploy-ec2", async (req, res) => {
   return res.json({ message: "Success! EC2 Is being prepared." });
 });
 
-app.post("/live-endpoints", async (req, res) => {
-  const urls = await describeInstances();
+app.post("/deploy-webhook", async (req, res) => {
+  const { ecrURL, name } = req.params;
+
+  // Create instance
+  try {
+    await deploy({ ecrURL, name });
+    console.log("worked!");
+  } catch (e) {
+    console.log("failed");
+    console.log(e);
+    return res.sendStatus(500);
+  }
+});
+
+app.get("/live-endpoints", async (req, res) => {
+  const response = await describeInstances({ filterId: "EC2_LIVE" });
+
+  const reservations = response.Reservations;
+  const instances = reservations.map((reservation) => {
+    const { Instances } = reservation;
+    const { PublicDnsName, Tags } = Instances[0];
+    const { Value } = Tags.find((x) => x.Key === "deployId");
+    return {
+      dns: `${PublicDnsName}:8080/invocations`,
+      id: Value,
+    };
+  });
+
+  return res.json(instances);
 });
 
 // For the demo
