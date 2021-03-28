@@ -55,7 +55,7 @@ const { describeInstances } = require("./ec2");
 const MICROSERVICE_ENDPOINT =
   "http://ec2-3-235-5-18.compute-1.amazonaws.com:8000/docker";
 
-app.get("/deploy-ec2", async (req, res) => {
+app.post("/deploy-ec2", async (req, res) => {
   //const { artifactLocation, ecrURL, name } = req.params;
    const { artifactLocation, ecrURL, name } = {
      artifactLocation: "s3://verisk-trial/models/0/942a0174d2f54888a23dc9269d98d69c/artifacts/model/",
