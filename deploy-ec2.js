@@ -16,6 +16,10 @@ const deploy = async ({ ecrURL, name }) => {
   const generator = idGenerator();
   const base64Script = generateScript(ecrURL, name);
   const id = generator().toString();
+  console.log("ecrURL:");
+  console.log(ecrURL);
+  console.log("name:");
+  console.log(name);
   console.log(base64Script);
 
   return createInstance({
@@ -46,6 +50,8 @@ const generateScript = (ECR_URI, name) => {
     aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin ${ECR_URI} >> logs.txt
     echo "sudo docker run -d -p 8080:8080 ${ECR_URI}/${name}:latest" >> logs.txt
     sudo docker run -d -p 8080:8080 ${ECR_URI}/${name}:latest >> logs.txt`;
+    console.log("Script:");
+    console.log(command);
   return new Buffer(command).toString("base64");
 };
 
