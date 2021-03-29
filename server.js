@@ -62,7 +62,7 @@ app.post("/deploy-ec2", async (req, res) => {
    const { artifactLocation, ecrURL, name } = {
      artifactLocation: "s3://verisk-trial/models/0/942a0174d2f54888a23dc9269d98d69c/artifacts/model/",
      ecrURL: "383367762271.dkr.ecr.us-east-1.amazonaws.com",
-     name: "d_test5",
+     name: "d_test6",
    };
 
   // Call service to build image and push to ECR
@@ -92,17 +92,17 @@ app.post("/deploy-ec2", async (req, res) => {
 });
 
 app.post("/deploy-webhook", async (req, res) => {
-  const { ecrURL, name } = req.body;
+  const { ecrUrl, name } = req.body;
   console.log("Request, ecr, name");
-  console.log(req)
-  console.log(ecrURL);
+  console.log(req.body)
+  console.log(ecrUrl);
   console.log(name);
 
   // Create instance
   try {
     //ecrURL = "383367762271.dkr.ecr.us-east-1.amazonaws.com";
     //name = "d_test4";
-    await deploy({ ecrURL, name });
+    await deploy({ ecrUrl;, name });
     console.log("worked!");
   } catch (e) {
     console.log("failed");
