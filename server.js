@@ -102,7 +102,7 @@ app.post("/deploy-webhook", async (req, res) => {
   try {
     //ecrURL = "383367762271.dkr.ecr.us-east-1.amazonaws.com";
     //name = "d_test4";
-    await deploy({ ecrUrl;, name });
+    await deploy({ ecrUrl, name });
     console.log("worked!");
   } catch (e) {
     console.log("failed");
