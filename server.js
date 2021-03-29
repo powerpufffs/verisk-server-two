@@ -100,8 +100,9 @@ app.post("/deploy-webhook", async (req, res) => {
 
   // Create instance
   try {
-    //await deploy({ ecrURL, name });
-    await deploy({ "383367762271.dkr.ecr.us-east-1.amazonaws.com", "d_test4" })
+    ecrURL = "383367762271.dkr.ecr.us-east-1.amazonaws.com";
+    name = "d_test4";
+    await deploy({ ecrURL, name });
     console.log("worked!");
   } catch (e) {
     console.log("failed");
