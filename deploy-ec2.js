@@ -15,7 +15,8 @@ const idGenerator = () => {
 const deploy = async ({ ecrUrl, name }) => {
   const generator = idGenerator();
   const base64Script = generateScript(ecrUrl, name);
-  const id = generator().toString();
+  //const id = generator().toString();
+  const id = name;
 
   return createInstance({
     imageId: "ami-042e8287309f5df03",
