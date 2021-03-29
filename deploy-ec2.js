@@ -46,10 +46,8 @@ const generateScript = (ECR_URI, name) => {
     sudo apt install unzip
     sudo unzip awscliv2.zip
     sudo ./aws/install
-    echo "aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin ${ECR_URI}" >> logs.txt
-    aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin ${ECR_URI} >> logs.txt
-    echo "sudo docker run -d -p 8080:8080 ${ECR_URI}/${name}:latest" >> logs.txt
-    sudo docker run -d -p 8080:8080 ${ECR_URI}/${name}:latest >> logs.txt`;
+    aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin ${ECR_URI}
+    sudo docker run -d -p 8080:8080 ${ECR_URI}/${name}:latest`;
     console.log("Script:");
     console.log(command);
   return new Buffer(command).toString("base64");
