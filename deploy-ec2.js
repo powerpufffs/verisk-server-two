@@ -12,12 +12,12 @@ const idGenerator = () => {
   };
 };
 
-const deploy = async ({ ecrURL, name }) => {
+const deploy = async ({ ecrUrl, name }) => {
   const generator = idGenerator();
-  const base64Script = generateScript(ecrURL, name);
+  const base64Script = generateScript(ecrUrl, name);
   const id = generator().toString();
   console.log("ecrURL:");
-  console.log(ecrURL);
+  console.log(ecrUrl);
   console.log("name:");
   console.log(name);
   console.log(base64Script);

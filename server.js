@@ -62,7 +62,7 @@ app.post("/deploy-ec2", async (req, res) => {
    const { artifactLocation, ecrURL, name } = {
      artifactLocation: "s3://verisk-trial/models/0/942a0174d2f54888a23dc9269d98d69c/artifacts/model/",
      ecrURL: "383367762271.dkr.ecr.us-east-1.amazonaws.com",
-     name: "d_test6",
+     name: "d_test7",
    };
 
   // Call service to build image and push to ECR
