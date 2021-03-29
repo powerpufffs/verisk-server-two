@@ -16,11 +16,6 @@ const deploy = async ({ ecrUrl, name }) => {
   const generator = idGenerator();
   const base64Script = generateScript(ecrUrl, name);
   const id = generator().toString();
-  console.log("ecrURL:");
-  console.log(ecrUrl);
-  console.log("name:");
-  console.log(name);
-  console.log(base64Script);
 
   return createInstance({
     imageId: "ami-042e8287309f5df03",
@@ -32,8 +27,6 @@ const deploy = async ({ ecrUrl, name }) => {
 };
 
 const generateScript = (ECR_URI, name) => {
-  console.log(ECR_URI);
-  console.log(name);
   let command = `#!/bin/bash
     sudo apt-get update
     sudo apt install apt-transport-https ca-certificates curl software-properties-common -y

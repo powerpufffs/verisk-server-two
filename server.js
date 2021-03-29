@@ -55,22 +55,36 @@ const { describeInstances } = require("./ec2");
 const MICROSERVICE_ENDPOINT =
   "http://ec2-3-235-5-18.compute-1.amazonaws.com:8000/docker";
 
+
+// This endpoint is hit when the front end selects "Deploy Hosted on EC2"
+// This function sends a request to another server to create a
+//    docker image of an ML model and push it to AWS ECR
+// Parameters:
+//    artifactLocation: The S3 bucket where the artifacts are stored for the ML MODEL
+//    ecrURL: The URL for the ecr registry where the docker image will be stored
+//    name: The name to be used for the ecr repository as well as the docker image
+//        NOTE: a timestamp is added to the name variable to make it unique
+//
+//  NOTE: This function sends work out to another server to be done.  When the other
+//        server finished its work, it will send back a request to the "/deploy-webhook"
+//        endpoint on this server to finish out the task
 app.post("/deploy-ec2", async (req, res) => {
-  //const { artifactLocation, ecrURL, name } = req.params;
+  const { artifactLocation, ecrURL, name } = req.body;
   console.log("Request Parameters:");
-  console.log(req.params);
-   const { artifactLocation, ecrURL, name } = {
-     artifactLocation: "s3://verisk-trial/models/0/942a0174d2f54888a23dc9269d98d69c/artifacts/model/",
-     ecrURL: "383367762271.dkr.ecr.us-east-1.amazonaws.com",
-     name: "d_test7",
-   };
+  console.log(req.body);
+   //const { artifactLocation, ecrURL, name } = {
+    // artifactLocation: "s3://verisk-trial/models/0/942a0174d2f54888a23dc9269d98d69c/artifacts/model/",
+    // ecrURL: "383367762271.dkr.ecr.us-east-1.amazonaws.com",
+    // name: "d_test7",
+   //};
+   let uniqueName = name + Date.now();
 
   // Call service to build image and push to ECR
   try {
      const { data } = await axios.post(MICROSERVICE_ENDPOINT, {
        artifactLocation: artifactLocation,
        ecrURL: ecrURL,
-       name: name,
+       name: uniqueName,
      });
   } catch (e) {
     console.log(e);
@@ -91,17 +105,18 @@ app.post("/deploy-ec2", async (req, res) => {
   return res.json({ message: "Success! EC2 Is being prepared." });
 });
 
+
+// This endpoint is hit when a docker image on an ML Model has been pushed to ECR
+// This function will create an ec2 instance and pass in a script which will
+//    run the ML Model contained in the docker image at the ECR URL/repository
+// Parameters:
+//    ecrUrl: The URL of the ecr registry
+//    name: the name of the ecr repository as well as the name of the docker image
 app.post("/deploy-webhook", async (req, res) => {
   const { ecrUrl, name } = req.body;
-  console.log("Request, ecr, name");
-  console.log(req.body)
-  console.log(ecrUrl);
-  console.log(name);
 
   // Create instance
   try {
-    //ecrURL = "383367762271.dkr.ecr.us-east-1.amazonaws.com";
-    //name = "d_test4";
     await deploy({ ecrUrl, name });
     console.log("worked!");
   } catch (e) {
