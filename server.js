@@ -93,6 +93,8 @@ app.post("/deploy-ec2", async (req, res) => {
 
 app.post("/deploy-webhook", async (req, res) => {
   const { ecrURL, name } = req.params;
+  console.log(ecrURL);
+  console.log(name);
 
   // Create instance
   try {
