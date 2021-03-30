@@ -115,6 +115,10 @@ app.post("/deploy-ec2", async (req, res) => {
 app.post("/deploy-webhook", async (req, res) => {
   const { ecrUrl, name } = req.body;
 
+  if (ecrUrl.charAt(ecrUrl.length - 1) === '/') {
+    ecrUrl = ecrUrl.slice(0, ecrUrl.length - 1);
+  }
+
   // Create instance
   try {
     await deploy({ ecrUrl, name });
