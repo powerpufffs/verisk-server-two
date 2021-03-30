@@ -114,14 +114,15 @@ app.post("/deploy-ec2", async (req, res) => {
 //    name: the name of the ecr repository as well as the name of the docker image
 app.post("/deploy-webhook", async (req, res) => {
   const { ecrUrl, name } = req.body;
+  var validatedEcrUrl = ecrUrl;
 
   if (ecrUrl.charAt(ecrUrl.length - 1) === '/') {
-    ecrUrl = ecrUrl.slice(0, ecrUrl.length - 1);
+    validatedEcrUrl = ecrUrl.slice(0, ecrUrl.length - 1);
   }
 
   // Create instance
   try {
-    await deploy({ ecrUrl, name });
+    await deploy({ validatedEcrUrl, name });
     console.log("worked!");
   } catch (e) {
     console.log("failed");
