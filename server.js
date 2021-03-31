@@ -116,10 +116,14 @@ app.post("/deploy-webhook", async (req, res) => {
   const { ecrUrl, name } = req.body;
   console.log(ecrUrl);
   var validatedEcrUrl = ecrUrl;
+  console.log("val1")
+  console.log(validatedEcrUrl);
 
   if (ecrUrl.charAt(ecrUrl.length - 1) === '/') {
     validatedEcrUrl = ecrUrl.slice(0, ecrUrl.length - 1);
   }
+  console.log("val2");
+  console.log(validatedEcrUrl);
 
   // Create instance
   try {
