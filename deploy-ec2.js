@@ -14,7 +14,7 @@ const idGenerator = () => {
 
 const deploy = async ({ validatedEcrUrl, name }) => {
   const generator = idGenerator();
-  const base64Script = generateScript(ecrUrl, name);
+  const base64Script = generateScript(validatedEcrUrl, name);
   //const id = generator().toString();
   const id = name;
 
