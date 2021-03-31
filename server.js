@@ -114,6 +114,7 @@ app.post("/deploy-ec2", async (req, res) => {
 //    name: the name of the ecr repository as well as the name of the docker image
 app.post("/deploy-webhook", async (req, res) => {
   const { ecrUrl, name } = req.body;
+  console.log(ecrUrl);
   var validatedEcrUrl = ecrUrl;
 
   if (ecrUrl.charAt(ecrUrl.length - 1) === '/') {
