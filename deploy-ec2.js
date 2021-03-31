@@ -14,10 +14,10 @@ const idGenerator = () => {
 
 const deploy = async ({ validatedEcrUrl, name }) => {
   const generator = idGenerator();
-  const base64Script = generateScript(validatedEcrUrl, name);
+  let lowerCaseName = name.toLowerCase();
+  const base64Script = generateScript(validatedEcrUrl, lowerCaseName);
   //const id = generator().toString();
   const id = name;
-  let lowerCaseName = name.toLowerCase();
 
   return createInstance({
     imageId: "ami-042e8287309f5df03",
@@ -28,7 +28,7 @@ const deploy = async ({ validatedEcrUrl, name }) => {
   });
 };
 
-const generateScript = (ECR_URI, lowerCaseName) => {
+const generateScript = (ECR_URI, name) => {
   let command = `#!/bin/bash
     sudo apt-get update
     sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
