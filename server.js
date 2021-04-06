@@ -143,7 +143,10 @@ app.post("/query-model", async (req, res) => {
   let response;
 
   try {
-    response = await axios.post(url, payload);
+    response = await axios.post(url, payload, { headers: {
+            "Content-Type": "application/json",
+            format: "pandas-split",
+          }});
     console.log(response.data);
   }
   catch(err) {
