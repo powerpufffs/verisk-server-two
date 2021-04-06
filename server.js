@@ -67,7 +67,7 @@ app.post("/deploy-ec2", async (req, res) => {
    console.log(name);
    uniqueName = uniqueName.replace(/ /g,"_");
    console.log("Name:");
-   console.log(name);
+   console.log(uniqueName);
    console.log("ART:");
    console.log(artifactLocation);
 
