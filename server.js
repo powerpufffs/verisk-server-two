@@ -139,15 +139,15 @@ app.post("/query-model", async (req, res) => {
   console.log("url, payload");
   console.log(url);
   console.log(payload);
+
   try {
     const response = await axios.post(url, payload);
+    console.log(response.data);
   }
   catch(err) {
     console.log("Error message:");
     console.log(err);
   }
-
-  console.log(response);
 
   return res.json(response.body);
 });
