@@ -2,6 +2,8 @@ const { aws } = require("./aws-config");
 
 var ec2 = new aws.EC2();
 
+// Used to get the data of the EC2 instances that are currently hosting a
+// deployed MLModel.
 const describeInstances = async ({ filterId }) => {
   return ec2
     .describeInstances(
@@ -13,24 +15,13 @@ const describeInstances = async ({ filterId }) => {
         if (err) {
           console.error(err.toString());
         }
-        // console.log(data);
-        // const reservations = data.Reservations;
-        // const instances = reservations.map((reservation) => {
-        //   const { Instances } = reservation;
-        //   const { PublicDnsName, Tags } = Instances[0];
-        //   const { Value } = Tags.find((x) => x.Key === "deployId");
-        //   return {
-        //     dns: `${PublicDnsName}:8080/invocations`,
-        //     id: Value,
-        //   };
-        // });
-
-        // return instances.flat();
       }
     )
     .promise();
 };
 
+
+// Used to create an EC2 instance which will host a deployed MLModel
 const createInstance = async ({
   imageId,
   count,

@@ -15,7 +15,10 @@ const MLFLOW_UI_BASE_URL = process.env.MLFLOW_UI_BASE_URL;
 app.use(cors());
 app.use(bodyParser.json());
 
-// MLFLOW UI endpoints
+// MLFLOW UI endpoint
+// This endpoint will query the data of the registered models
+// using the "MLFLOW_UI_BASE_URL" that is provided
+// as the location of the MLFLOW Server
 app.get("/list-registered-models", async (req, res) => {
   let response;
   try {
@@ -37,6 +40,7 @@ const aws = require("aws-sdk");
 const exec = require("child_process").exec;
 
 // Deployment endpoints
+
 app.get("/deploy-docker", async (req, res) => {
   const { artifactLocation } = req.params;
 
@@ -65,19 +69,14 @@ const MICROSERVICE_ENDPOINT =
 //    name: The name to be used for the ecr repository as well as the docker image
 //        NOTE: a timestamp is added to the name variable to make it unique
 //
+//
 //  NOTE: This function sends work out to another server to be done.  When the other
-//        server finished its work, it will send back a request to the "/deploy-webhook"
-//        endpoint on this server to finish out the task
+//        server finishes its work, it will send back a request to the "/deploy-webhook"
+//        endpoint on this server to finish out the deployment task
 app.post("/deploy-ec2", async (req, res) => {
   const { artifactLocation, ecrURL, name } = req.body;
-  console.log("Request Parameters:");
-  console.log(req.body);
-   //const { artifactLocation, ecrURL, name } = {
-    // artifactLocation: "s3://verisk-trial/models/0/942a0174d2f54888a23dc9269d98d69c/artifacts/model/",
-    // ecrURL: "-",
-    // name: "d_test7",
-   //};
-   let uniqueName = name + Date.now();
+
+   let uniqueName = name + Date.now(); // Append Date.now() to make the name unique
 
   // Call service to build image and push to ECR
   try {
@@ -91,39 +90,23 @@ app.post("/deploy-ec2", async (req, res) => {
     return res.sendStatus(500);
   }
 
-  // Create instance
-//  try {
-//    await deploy({ ecrURL, name });
-//    console.log("worked!");
-//  } catch (e) {
-//    console.log("failed");
-//    console.log(e);
-//    return res.sendStatus(500);
-//  }
-
-  // res.json({ publicDNS: `${dns}:8080/invocations` });
   return res.json({ message: "Success! EC2 Is being prepared." });
 });
 
 
 // This endpoint is hit when a docker image on an ML Model has been pushed to ECR
 // This function will create an ec2 instance and pass in a script which will
-//    run the ML Model contained in the docker image at the ECR URL/repository
+//    run the ML Model contained in the docker image at the ECR URL (repository)
 // Parameters:
 //    ecrUrl: The URL of the ecr registry
 //    name: the name of the ecr repository as well as the name of the docker image
 app.post("/deploy-webhook", async (req, res) => {
   const { ecrUrl, name } = req.body;
-  //console.log(ecrUrl);
   var validatedEcrUrl = ecrUrl;
-  //console.log("val1")
-  //console.log(validatedEcrUrl);
 
   if (ecrUrl.charAt(ecrUrl.length - 1) === '/') {
     validatedEcrUrl = ecrUrl.slice(0, ecrUrl.length - 1);
   }
-  //console.log("val2");
-  //console.log(validatedEcrUrl);
 
   // Create instance
   try {
@@ -136,6 +119,10 @@ app.post("/deploy-webhook", async (req, res) => {
   }
 });
 
+
+// This endpoint is used to query the data of the EC2 instances that are currently
+// hosting a deployed mlModel.  When the models are created using the "deploy-ec2" endpoint,
+// They are tagged with
 app.get("/live-endpoints", async (req, res) => {
   const response = await describeInstances({ filterId: "EC2_LIVE" });
 
@@ -151,6 +138,20 @@ app.get("/live-endpoints", async (req, res) => {
   });
 
   return res.json(instances);
+});
+
+
+// This is the current solution we have for querying a deployed model
+// It's only purpose it to get around CORS errors when trying to
+// query a deployed model from the frontend.  It simply passes on a post request
+// and returns the response.
+app.post("/query-model", async (req, res) => {
+  const { url, payload } = req.body;
+  const response = axios.post(url, payload);
+
+  console.log(response);
+
+  return res.json(response.body);
 });
 
 // For the demo
