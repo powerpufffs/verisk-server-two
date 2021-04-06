@@ -67,6 +67,8 @@ app.post("/deploy-ec2", async (req, res) => {
    uniqueName = uniqueName.replace(/ /g,"_");
    console.log("Name:");
    console.log(name);
+   console.log("ART:");
+   console.log(artifactLocation);
 
   // Call service to build image and push to ECR
   try {
