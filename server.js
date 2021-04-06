@@ -41,19 +41,6 @@ const exec = require("child_process").exec;
 
 // Deployment endpoints
 
-app.get("/deploy-docker", async (req, res) => {
-  const { artifactLocation } = req.params;
-
-  // execute script
-  const result = await exec("echo 'AMAZING'");
-
-  return res.json({ result });
-});
-
-app.get("/deploy-ecs", async (req, res) => {
-  return res.json("hi");
-});
-
 const { deploy } = require("./deploy-ec2");
 const { describeInstances } = require("./ec2");
 const MICROSERVICE_ENDPOINT =
@@ -147,6 +134,11 @@ app.get("/live-endpoints", async (req, res) => {
 // and returns the response.
 app.post("/query-model", async (req, res) => {
   const { url, payload } = req.body;
+  console.log("Request");
+  console.log(req);
+  console.log("url, payload");
+  console.log(url);
+  console.log(payload);
   const response = await axios.post(url, payload);
 
   console.log(response);
