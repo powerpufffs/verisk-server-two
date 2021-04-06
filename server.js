@@ -147,7 +147,7 @@ app.get("/live-endpoints", async (req, res) => {
 // and returns the response.
 app.post("/query-model", async (req, res) => {
   const { url, payload } = req.body;
-  const response = axios.post(url, payload);
+  const response = await axios.post(url, payload);
 
   console.log(response);
 
