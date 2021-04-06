@@ -16,7 +16,6 @@ const {
 // Calls: generateScript (see below)
 //        createInstance (see ec2.js)
 const deploy = async ({ validatedEcrUrl, name }) => {
-  const generator = idGenerator();
   let lowerCaseName = name.toLowerCase();
   const base64Script = generateScript(validatedEcrUrl, lowerCaseName);
   //const id = generator().toString();
