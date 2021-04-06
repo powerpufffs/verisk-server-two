@@ -140,8 +140,10 @@ app.post("/query-model", async (req, res) => {
   console.log(url);
   console.log(payload);
 
+  let response;
+
   try {
-    const response = await axios.post(url, payload);
+    response = await axios.post(url, payload);
     console.log(response.data);
   }
   catch(err) {
@@ -149,7 +151,7 @@ app.post("/query-model", async (req, res) => {
     console.log(err);
   }
 
-  return res.json(response.body);
+  return res.json(response.data);
 });
 
 // For the demo
