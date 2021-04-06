@@ -64,7 +64,7 @@ app.post("/deploy-ec2", async (req, res) => {
   const { artifactLocation, ecrURL, name } = req.body;
 
    let uniqueName = name + Date.now(); // Append Date.now() to make the name unique
-   name=name.replace(/ /g,"_");
+   uniqueName = uniqueName.replace(/ /g,"_");
    console.log("Name:");
    console.log(name);
 
