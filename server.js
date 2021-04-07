@@ -141,7 +141,7 @@ app.get("/live-endpoints", async (req, res) => {
 app.post("/query-model", async (req, res) => {
   const { url, payload } = req.body;
   console.log("Request");
-  console.log(req);
+  console.log(req.body);
   console.log("url, payload");
   console.log(url);
   console.log(payload);
