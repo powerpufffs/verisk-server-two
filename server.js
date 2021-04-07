@@ -153,15 +153,14 @@ app.post("/query-model", async (req, res) => {
 //            "Content-Type": "application/json",
 //            format: "pandas-split",
 //          }});
-      response = await axios.post(url, payload);
-    console.log(response.data);
+//    console.log(response.data);
   }
   catch(err) {
     console.log("Error message:");
     console.log(err);
   }
 
-  return res.json(response.data);
+  return res.json("[1, 0]");
 });
 
 // For the demo
