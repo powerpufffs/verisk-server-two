@@ -151,7 +151,7 @@ app.post("/query-model", async (req, res) => {
 
   try {
     console.log("Before");
-    response = await axios.post(`http://ec2-3-235-5-18.compute-1.amazonaws.com:8080/invocations`, payload, { headers: {
+    response = await axios.post(`http://ec2-3-239-185-2.compute-1.amazonaws.com:8080/invocations`, payload, { headers: {
             "Content-Type": "application/json",
             format: "pandas-split",
           }});
