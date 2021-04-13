@@ -26,8 +26,8 @@ const createInstance = async ({
   imageId,
   count,
   keyName,
-  subnetId = "subnet-02fae22e3e7147ba0",
-  securityGroupIds = ["sg-056ff00b48bd090df"],
+  subnetId = process.env.SUBNET_ID,
+  securityGroupIds = [process.env.SECURITY_GROUP_ID],
   deployId,
   userData,
 }) => {
@@ -57,7 +57,7 @@ const createInstance = async ({
         SecurityGroupIds: securityGroupIds,
         InstanceType: "t2.micro",
         IamInstanceProfile: {
-          Name: "verisk-ec2",
+          Name: process.env.IAM_ID,
         },
         UserData: userData,
       },

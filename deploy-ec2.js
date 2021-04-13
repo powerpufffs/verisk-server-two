@@ -24,7 +24,7 @@ const deploy = async ({ validatedEcrUrl, name }) => {
   return createInstance({
     imageId: "ami-042e8287309f5df03",
     count: 1,
-    keyName: "verisk-team",
+    keyName: process.env.KEY_NAME,
     deployId: id,
     userData: base64Script,
   });
