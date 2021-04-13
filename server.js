@@ -152,8 +152,7 @@ app.post("/query-model", async (req, res) => {
   try {
     console.log("Before");
     response = await axios.post(url, payload, { headers: {
-            "Content-Type": [ "application/json",
-            "format=pandas-split" ]
+            "Content-Type": "format=pandas-split"
           }});
     console.log(response);
     console.log(response.data);
