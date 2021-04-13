@@ -34,6 +34,7 @@ const deploy = async ({ validatedEcrUrl, name }) => {
 // The script will install needed dependencies (docker and AWS CLI), log in
 // to the ecr registry, and then pull the docker image and run it in the background
 // on port 8080.
+// NOTE: THE AWS ROLE PASSED IN TO THIS EC2 WILL NEED PERMISSIONS TO LOG IN TO AWS ECR
 const generateScript = (ECR_URI, name) => {
   let command = `#!/bin/bash
     sudo apt-get update

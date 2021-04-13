@@ -10,6 +10,7 @@ const app = express();
 // Constants
 const PORT = process.env.PORT;
 const MLFLOW_UI_BASE_URL = process.env.MLFLOW_UI_BASE_URL;
+const MICROSERVICE_ENDPOINT = process.env.MICROSERVICE_ENDPOINT;
 
 // Middleware
 app.use(cors());
@@ -43,8 +44,8 @@ const exec = require("child_process").exec;
 
 const { deploy } = require("./deploy-ec2");
 const { describeInstances } = require("./ec2");
-const MICROSERVICE_ENDPOINT =
-  "http://ec2-3-235-5-18.compute-1.amazonaws.com:8000/docker";
+//const MICROSERVICE_ENDPOINT =
+//  "http://ec2-3-235-5-18.compute-1.amazonaws.com:8000/docker";
 
 
 // This endpoint is hit when the front end selects "Deploy Hosted on EC2"
@@ -149,18 +150,18 @@ app.post("/query-model", async (req, res) => {
   let response;
 
   try {
-//    response = await axios.post(url, payload, { headers: {
-//            "Content-Type": "application/json",
-//            format: "pandas-split",
-//          }});
-//    console.log(response.data);
+    response = await axios.post(url, payload, { headers: {
+            "Content-Type": "application/json",
+            format: "pandas-split",
+          }});
+    console.log(response.data);
   }
   catch(err) {
     console.log("Error message:");
     console.log(err);
   }
 
-  return res.json("[1, 0]");
+  return res.json(response.data);
 });
 
 // For the demo
